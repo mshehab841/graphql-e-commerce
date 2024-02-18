@@ -1,6 +1,6 @@
 import { gql } from "apollo-server"
 
-const userTypedef : any  = gql`
+const userTypedef   = gql`
  type User{
     id : ID!
     name : String 
@@ -13,19 +13,20 @@ input addUserInput {
     password : String! 
 }
 input loginInput { 
-    email : String!
-    password : String!
+    email : String
+    password : String
 }
 type userRES { 
     data : User
     message : String 
 }
+
 type Query { 
-    me(id : ID!): User!
+    me : User!
 }
 type Mutation {
     addUser(input:addUserInput!) : User!
-    login( in: loginInput!) : String !
+    login(input: loginInput!) : String!
 }
 `
 export default userTypedef

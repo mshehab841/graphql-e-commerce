@@ -1,13 +1,16 @@
-import User from "./user.model";
 import userServices from "./user.service";
 import userRepository from "./user.repo";
+import auth from "../../middleware/context";
 
 const userRepo = new userRepository()
 const service = new userServices(userRepo)
 const userResolvers = {
     Query: {
-        me: (_ : string, {id})=>{
-            const user = User.findByPk(id)
+        me: async(_ , __ , context )=>{
+            const user = auth(context)
+            if (!user) {
+                throw new Error("here")
+            }
             return user
         }
     },
@@ -16,9 +19,10 @@ const userResolvers = {
             const user = await service.addUserServices(input.email , input.name , input.password)
             return  user 
         },
-        login : async (_  :string , {in : {email ,password }})=>{
-            const id = await service.loginServices(email , password)
-            return id
+        login : async (_  :string , {input})=>{
+            const token = await service.loginServices(input.email , input.password)
+            console.log(token);
+            return token
         }
 
     }

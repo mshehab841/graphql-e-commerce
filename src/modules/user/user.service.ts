@@ -1,6 +1,7 @@
 import { userType } from "../../utils/type";
 import bcrypt from "bcrypt"
 import  { userRepoType } from "./user.repo";
+import { generateTwoToken } from "../../middleware/deserialize-user";
 
 
 
@@ -22,7 +23,7 @@ class userServices {
         const user = await this.userRepo.createUser(email , name , hashedPassword)
         return user 
     }
-    async loginServices (email : string , password : string ):Promise<string>{
+    async loginServices (email : string , password : string ):Promise<any> {
         if (!email || !password){
             throw new Error("All fields are required")
         }
@@ -34,7 +35,8 @@ class userServices {
         if (!match){
             throw new Error("Wrong password")
         }
-        return user.toJSON().id
+        const token = generateTwoToken(user.id)
+        return token
     }
 }
 export default userServices
