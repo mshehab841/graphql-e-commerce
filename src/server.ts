@@ -3,16 +3,24 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import typeDefs from './modules/schema/typeDefs';
 import resolvers from './modules/schema/resolvers';
 import { db_connection } from './DB/connection';
+import { userType } from './utils/type';
+import dotenv from 'dotenv';
+dotenv.config()
 
 db_connection()
 
-const server = new ApolloServer({
+interface contextType {
+  user? : userType
+}
+async function main() {
+
+const server = new ApolloServer<contextType>({
   typeDefs,
   resolvers,
 });
-async function main ()  {
-  const { url } =  await startStandaloneServer(server, {
-    listen: { port: 4000 },
+
+  const { url } = await startStandaloneServer(server, {
+    context: async ({ req  , res }) => ({req , res })
   });
 console.log(`🚀  Server ready at: ${url}`);
 }
