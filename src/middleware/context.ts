@@ -26,7 +26,7 @@ const auth = async ({req , res })=>{
             if(!user){
                 throw new Error('user not found')
             }
-            return user 
+            return user.toJSON()
         }
     }
     if(refreshToken){

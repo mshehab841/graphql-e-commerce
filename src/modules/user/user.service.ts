@@ -1,7 +1,7 @@
-import { userType } from "../../utils/type";
 import bcrypt from "bcrypt"
 import  { userRepoType } from "./user.repo";
 import { generateTwoToken } from "../../middleware/deserialize-user";
+import { User, UserRes } from "../../types";
 
 
 
@@ -11,7 +11,7 @@ class userServices {
     constructor (userRepo : userRepoType) {
         this.userRepo = userRepo
     }
-    async addUserServices (email : string , name : string , password : string):Promise<userType>{
+    async addUserServices (email : string , name : string , password : string):Promise<User>{
         if (!email || !name || !password) {
             throw new Error("All fields are required")
         }
@@ -21,9 +21,9 @@ class userServices {
         }
         const hashedPassword = await bcrypt.hash(password , 10)
         const user = await this.userRepo.createUser(email , name , hashedPassword)
-        return user 
+        return user
     }
-    async loginServices (email : string , password : string ):Promise<any> {
+    async loginServices (email : string , password : string ):Promise<UserRes> {
         if (!email || !password){
             throw new Error("All fields are required")
         }

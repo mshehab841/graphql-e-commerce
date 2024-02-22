@@ -1,4 +1,4 @@
-import { gql } from "apollo-server"
+import gql from "graphql-tag"
 
 const userTypedef   = gql`
  type User{
@@ -13,12 +13,12 @@ input addUserInput {
     password : String! 
 }
 input loginInput { 
-    email : String
-    password : String
+    email : String!
+    password : String!
 }
 type userRES { 
-    data : User
-    message : String 
+    accessToken : String!
+    refreshToken : String!
 }
 
 type Query { 
@@ -26,7 +26,7 @@ type Query {
 }
 type Mutation {
     addUser(input:addUserInput!) : User!
-    login(input: loginInput!) : String!
+    login(input: loginInput!) : userRES !
 }
 `
 export default userTypedef

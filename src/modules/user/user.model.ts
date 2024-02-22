@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 
 
 
-const User   = sql_config.define('user',{
+const Users   = sql_config.define('user',{
     id : {
         type : DataTypes.INTEGER,
         primaryKey : true,
@@ -33,5 +33,5 @@ const User   = sql_config.define('user',{
 },{
     timestamps : false
 })
-export type  userType = typeof User
-export default User
+export type  userType = typeof Users
+export default Users

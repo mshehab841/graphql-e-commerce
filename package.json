@@ -6,19 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./src/server.ts",
-    "prod": "pm2 delete fishing && pm2 start --name fishing\"npx ts-node --transpile-only ./src/server.ts\""
-
+    "prod": "pm2 delete e-commerce-graphql && pm2 start e-commerce-graphql --name e-commerce-graphql \"npx ts-node --transpile-only ./src/server.ts\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.10.0",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.4",
+    "@graphql-codegen/typescript-resolvers": "^4.0.4",
     "@types/jsonwebtoken": "^9.0.5",
     "apollo-server": "^3.13.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.4",
     "gql": "^1.1.2",
     "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "mysql2": "^3.9.1",

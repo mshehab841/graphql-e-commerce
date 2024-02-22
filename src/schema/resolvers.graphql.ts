@@ -1,4 +1,4 @@
-import userResolvers from "../user/user.mutation";
+import userResolvers from "../modules/user/user.resolver";
 
 const resolvers = {
     Query : {
