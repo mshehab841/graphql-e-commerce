@@ -1,10 +1,10 @@
-import { userType } from "../../utils/type"
-import User from "./user.model"
+import Users from "./user.model"
 
+import { User } from "../../types"
 
 class userRepository {
-    async createUser (email : string , name : string , password : string) : Promise<userType> {
-        const user = await User.create({
+    async createUser (email : string , name : string , password : string) : Promise<User> {
+        const user = await Users.create({
             email,
             name,
             password
@@ -12,12 +12,12 @@ class userRepository {
         return user.toJSON()
     }
     async getUserByEmail (email : string) : Promise<any | null> {
-        const user = await User.findOne({
+        const user = await Users.findOne({
             where : {
                 email
             }
         })
-        return user
+        return user!.toJSON()
     }
 }
 export type userRepoType =  userRepository

@@ -1,4 +1,4 @@
-import userTypedef from "../user/user.typedef";
+import userTypedef from "../modules/user/user.schema";
 
 const typeDefs = {
     ...userTypedef
