@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { userRepoType } from "./user.repo";
+
 import { generateTwoToken } from "../../middleware/deserialize-user";
 import { User, UserRes } from "../../types";
 
@@ -28,6 +29,7 @@ class userServices {
         name: string,
         password: string
     ): Promise<User> {
+
         if (!email || !name || !password) {
             throw new Error("All fields are required");
         }
@@ -47,6 +49,7 @@ class userServices {
         const user : User  = await this.userRepo.getUserByEmail(email);
         if (!user) {
             throw new Error("User not found");
+
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {

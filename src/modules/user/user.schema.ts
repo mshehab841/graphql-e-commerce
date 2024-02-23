@@ -7,6 +7,7 @@ const userTypedef   = gql`
     email : String 
     password : String 
     verified : Boolean
+
 }
 input addUserInput {
     name : String!

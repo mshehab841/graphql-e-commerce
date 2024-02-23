@@ -11,6 +11,7 @@ const config : CodegenConfig = {
             config:{
                 contextType : "./utils/type#context",
             }
+
         }
     }
 }

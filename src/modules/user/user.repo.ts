@@ -12,6 +12,7 @@ class userRepository {
         return user.toJSON()
     }
     async getUserByEmail (email : string) : Promise<User> {
+
         const user = await Users.findOne({
             where : {
                 email
