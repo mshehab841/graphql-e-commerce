@@ -3,7 +3,7 @@ interface TwoToken {
     accessToken : string
     refreshToken : string
 }
-export function generateTwoToken (id : number):TwoToken{
+export function generateTwoToken (id : string):TwoToken{
     const accessToken = jwt.sign( {id}  , process.env.TOKEN_Auth as string , {expiresIn : "1m"})
     const refreshToken = jwt.sign( {id}, process.env.TOKEN_REFRESH  as string , {expiresIn : "1d"})
     return {
