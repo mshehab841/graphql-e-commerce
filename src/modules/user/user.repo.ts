@@ -20,6 +20,21 @@ class userRepository {
         })
         return user!.toJSON()
     }
+    async getUserById(id : number ) : Promise<User>{
+        const user = await  Users.findByPk(id)
+        if (!user) {
+            throw new Error("User not found")
+        }
+        return user.toJSON()
+    }
+    async verifiedUser(id : number) : Promise<void>{
+        const user : any = await Users.findByPk(id)
+        if (!user) {
+            throw new Error("User not found")
+        }
+        user.verified = true
+        await user.save()
+    }
 }
 export type userRepoType =  userRepository
 export default userRepository

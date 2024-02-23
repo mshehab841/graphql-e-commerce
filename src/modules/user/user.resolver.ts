@@ -24,8 +24,15 @@ const userResolvers : Resolvers = {
             const token = await service.loginServices(input.email , input.password)
             console.log(token);
             return token 
+        },
+        verifyEmail : async (_ : {} , {verificationToken})=>{
+            const response =  await service.verifyEmailServices(verificationToken)
+            return response
+        },
+        resendVerificationEmail : async (_ : {} , {email})=>{
+            const response =  await service.resendVerificationEmailServices(email)
+            return response
         }
-
     }
 }
 

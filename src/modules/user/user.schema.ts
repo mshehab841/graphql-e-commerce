@@ -2,7 +2,7 @@ import gql from "graphql-tag"
 
 const userTypedef   = gql`
  type User{
-    id : ID!
+    id : Int!
     name : String 
     email : String 
     password : String 
@@ -28,7 +28,9 @@ type Query {
 }
 type Mutation {
     addUser(input:addUserInput!) : User!
-    login(input: loginInput!) : userRES !
+    login(input: loginInput!) : userRES!
+    verifyEmail(verificationToken : String!) : String!
+    resendVerificationEmail(email : String!) : String!
 }
 `
 export default userTypedef
