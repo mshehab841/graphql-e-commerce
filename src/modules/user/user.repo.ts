@@ -11,14 +11,17 @@ class userRepository {
         })
         return user.toJSON()
     }
-    async getUserByEmail (email : string) : Promise<User> {
+    async getUserByEmail (email : string) : Promise<User | null> {
 
         const user = await Users.findOne({
             where : {
                 email
             }
         })
-        return user!.toJSON()
+        if (!user) {
+            return null
+        }
+        return user.toJSON()
     }
 }
 export type userRepoType =  userRepository

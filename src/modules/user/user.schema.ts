@@ -28,7 +28,7 @@ type Query {
 }
 type Mutation {
     addUser(input:addUserInput!) : User!
-    login(input: loginInput!) : userRES !
+    login(input: loginInput!) : userRES!
 }
 `
 export default userTypedef

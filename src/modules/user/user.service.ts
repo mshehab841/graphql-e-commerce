@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
 import { userRepoType } from "./user.repo";
 
-import { generateTwoToken } from "../../middleware/deserialize-user";
+import { generateTwoToken, verificationToken } from "../../middleware/deserialize-user";
 import { User, UserRes } from "../../types";
+import { sendVerificationEmail } from "../../middleware/send-email";
 
 /**
  * in Register :- 
@@ -39,19 +40,20 @@ class userServices {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await this.userRepo.createUser(email, name, hashedPassword);
-
+        const token = verificationToken(user.id)
+        sendVerificationEmail(email,token)
         return user;
     }
     async loginServices(email: string, password: string): Promise<UserRes> {
         if (!email || !password) {
             throw new Error("All fields are required");
         }
-        const user : User  = await this.userRepo.getUserByEmail(email);
+        const user   = await this.userRepo.getUserByEmail(email);
         if (!user) {
             throw new Error("User not found");
 
         }
-        const match = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password!);
         if (!match) {
             throw new Error("Wrong password");
         }

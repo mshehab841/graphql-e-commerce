@@ -25,7 +25,6 @@ const userResolvers : Resolvers = {
             console.log(token);
             return token 
         }
-
     }
 }
 

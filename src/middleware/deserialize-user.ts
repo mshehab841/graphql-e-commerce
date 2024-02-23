@@ -26,3 +26,8 @@ export function generateNewAccessToken (userId : string ):string {
     const accessToken = jwt.sign( {userId}  , process.env.TOKEN_AUTH as string , {expiresIn : "1m"})
     return accessToken
 }
+
+export function verificationToken(userId : string ){
+    const verificationToken = jwt.sign( {userId}  , process.env.VERIFICATION_TOKEN as string , {expiresIn : "3m"})
+    return verificationToken
+}
