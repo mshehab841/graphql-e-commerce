@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { userRepoType } from "./user.repo";
 
-import { generateTwoToken, verificationToken } from "../../middleware/deserialize-user";
+import { decodedEmailVerification, generateTwoToken, verificationToken } from "../../middleware/deserialize-user";
 import { User, UserRes } from "../../types";
 import { sendVerificationEmail } from "../../middleware/send-email";
 
@@ -62,6 +62,23 @@ class userServices {
         }
         const token = generateTwoToken(user.id);
         return token;
+    }
+    async verifyEmailServices(verificationToken : string): Promise<string> {
+        const decoded = decodedEmailVerification(verificationToken)
+        await this.userRepo.verifiedUser(decoded.userId)
+        return "Email Verified"
+    }
+    async resendVerificationEmailServices(email : string):Promise<string> {
+        const user = await this.userRepo.getUserByEmail(email)
+        if (!user) {
+            throw new Error("User not found");
+        }
+        if(user.verified){
+            throw new Error("Email already verified")
+        }
+        const token = verificationToken(user.id)
+        sendVerificationEmail(email,token)
+        return "Email Sent"
     }
 }
 export default userServices;
