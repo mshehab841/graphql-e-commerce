@@ -8,6 +8,10 @@ const config : CodegenConfig = {
                 "typescript",
                 "typescript-resolvers"
             ],
+            config:{
+                contextType : "./utils/type#context",
+            }
+
         }
     }
 }

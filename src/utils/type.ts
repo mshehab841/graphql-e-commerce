@@ -1,10 +1,6 @@
-export interface userType {
-    id? : number
-    email : string
-    name : string
-    password : string
-}
+import { IncomingMessage, ServerResponse } from "http"
 
-export interface RegisterType {
-
+export interface context {
+    res : ServerResponse<IncomingMessage>
+    req : IncomingMessage
 }
