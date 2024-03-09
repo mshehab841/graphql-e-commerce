@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import { userRepoType } from "./user.repo";
 
-import { decodedEmailVerification, generateTwoToken, verificationToken } from "../../middleware/deserialize-user";
+import { decodedEmailVerification, generateOTP, generateTwoToken, verificationToken } from "../../middleware/deserialize-user";
 import { User, UserRes } from "../../types";
-import { sendVerificationEmail } from "../../middleware/send-email";
+import { sendForgetPasswordEmail, sendVerificationEmail } from "../../middleware/send-email";
 
 /**
  * in Register :- 
@@ -48,7 +48,7 @@ class userServices {
         if (!email || !password) {
             throw new Error("All fields are required");
         }
-        const user   = await this.userRepo.getUserByEmail(email);
+        const user  = await this.userRepo.getUserByEmail(email);
         if (!user) {
             throw new Error("User not found");
 
@@ -80,5 +80,40 @@ class userServices {
         sendVerificationEmail(email,token)
         return "Email Sent"
     }
+    async PasswordResetServices(email : string): Promise<string>{
+        const user = await this.userRepo.getUserByEmail(email)
+        if (!user){
+            throw new Error("User not found")
+        }
+        const OTP = generateOTP()
+        await this.userRepo.saveOTP(OTP , user)
+        sendForgetPasswordEmail(email ,OTP )
+        return "check your email and reset password"
+    }
+    async confirmOtpServices(OTP : string , email : string) : Promise<string>{
+        const user = await this.userRepo.getUserByEmail(email)
+        if(!user ){
+            throw new Error("Email not found")
+        }
+        if(user && user.OTP === OTP ){
+
+            return "confirmation success"
+        }
+        return "Confirmation fail"
+    } 
+    async resetServices(password : string  , confirmPassword : string , email : string  ):Promise<string>{
+        const user  = await this.userRepo.getUserByEmail(email)
+        if(!user){
+            throw new Error("user not found")
+        }
+        if(password === confirmPassword){
+            const hashedPassword = await bcrypt.hash(password, 10);
+            this.userRepo.changePassword(hashedPassword , email)
+            return "password updated successfully"
+        }else{
+            return"something caused Error"
+        }
+    }
+
 }
 export default userServices;

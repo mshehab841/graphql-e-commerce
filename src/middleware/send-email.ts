@@ -10,8 +10,8 @@ export function sendVerificationEmail (email: string,verificationToken : string)
     sendSmtpEmail.templateId = 5
     sendSmtpEmail.subject = 'Verification Link'
     sendSmtpEmail.sender = {
-        name: 'e-c',
-        email: 'e-c@e-c.com',
+        name: 'com',
+        email: 'com@ecom.com',
     }
     sendSmtpEmail.to = [{
         email: email,
@@ -19,6 +19,30 @@ export function sendVerificationEmail (email: string,verificationToken : string)
     }]
     sendSmtpEmail.params = {
         verificationToken: verificationToken,
+        email: email
+    }
+    apiInstance.sendTransacEmail(sendSmtpEmail)
+        .then(function (data) {
+            console.log('API called successfully. Returned data:', data)
+        })
+        .catch(function (error) {
+            console.error('Error sending verification email:', error.message)
+        })
+}
+
+export function sendForgetPasswordEmail (email: string,OTP : string) {
+    sendSmtpEmail.templateId = 1
+    sendSmtpEmail.subject = ' forget Password '
+    sendSmtpEmail.sender = {
+        name: 'com',
+        email: 'com@ecom.com',
+    }
+    sendSmtpEmail.to = [{
+        email: email,
+        name: 'Receiver Name',
+    }]
+    sendSmtpEmail.params = {
+        OTP: OTP,
         email: email
     }
     apiInstance.sendTransacEmail(sendSmtpEmail)

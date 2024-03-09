@@ -24,14 +24,17 @@ const Users   = sql_config.define('user',{
         type : DataTypes.STRING(255),
         validate : {
             notEmpty : true
-        }
+        },
     },
     verified : {
         type : DataTypes.BOOLEAN,
         defaultValue : false
+    },
+    OTP :{
+        type : DataTypes.STRING,
     }
 },{
-    timestamps : false
+    timestamps : true
 })
 export type  userType = typeof Users
 export default Users

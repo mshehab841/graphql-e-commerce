@@ -7,17 +7,21 @@ class userRepository {
         const user = await Users.create({
             email,
             name,
-            password
+            password,
+
         })
         return user.toJSON()
     }
-    async getUserByEmail (email : string) : Promise<User> {
+     getUserByEmail  = async (email : string)  : Promise<User | null>=>{
 
-        const user = await Users.findOne({
+        const user  = await Users.findOne({
             where : {
                 email
             }
         })
+        if (!user) {
+            return null; // Return null if user is not found
+        }
         return user!.toJSON()
     }
     async getUserById(id : number ) : Promise<User>{
@@ -33,6 +37,15 @@ class userRepository {
             throw new Error("User not found")
         }
         user.verified = true
+        await user.save()
+    }
+    async saveOTP(OTP :string  , user :any): Promise<void>{
+        user.OTP  = OTP
+        await user.save()
+    }
+    async changePassword(password : string , email : string):Promise<void>{
+       const user : any =  await this.getUserByEmail(email)
+        user.password = password 
         await user.save()
     }
 }
