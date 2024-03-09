@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require ts-node/register test/**/*.spec.ts",
     "start": "nodemon ./src/server.ts",
     "prod": "pm2 delete e-commerce-graphql && pm2 start e-commerce-graphql --name e-commerce-graphql \"npx ts-node --transpile-only ./src/server.ts\""
   },
@@ -16,14 +16,17 @@
     "@graphql-codegen/typescript": "^4.0.4",
     "@graphql-codegen/typescript-resolvers": "^4.0.4",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/morgan": "^1.9.9",
     "apollo-server": "^3.13.0",
     "bcrypt": "^5.1.1",
+    "chai-http": "^4.4.0",
     "dotenv": "^16.4.4",
     "gql": "^1.1.2",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
+    "morgan": "^1.10.0",
     "mysql2": "^3.9.1",
     "nodemon": "^3.0.3",
     "pm2": "^5.3.1",
@@ -33,7 +36,11 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/chai": "^4.3.12",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.10",
+    "chai": "^5.1.0",
+    "mocha": "^10.3.0",
     "typescript": "^5.3.3"
   }
 }

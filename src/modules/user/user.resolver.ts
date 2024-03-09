@@ -32,6 +32,23 @@ const userResolvers : Resolvers = {
         resendVerificationEmail : async (_ : {} , {email})=>{
             const response =  await service.resendVerificationEmailServices(email)
             return response
+        },
+        resetPassword : async (_ : {} , {email})=>{
+            const res = await service.PasswordResetServices(email)
+            return res
+        },
+        confirmOTP : async (_ : {} , {OTP} , context)=>{
+            const user : User = await auth(context)
+            if (!user) {
+                throw new Error("Not authorized")
+            }
+            await service.confirmOtpServices(OTP , user.email!)
+            return "OTP Confirmed"
+
+        },
+        confirmResetPassword : async (_ : {} ,{password , confirmPassword ,email})=>{
+            const res = await service.resetServices(password,confirmPassword,email)
+            return res
         }
     }
 }

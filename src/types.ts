@@ -20,8 +20,11 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   addUser: User;
+  confirmOTP: Scalars['String']['output'];
+  confirmResetPassword?: Maybe<Scalars['String']['output']>;
   login: UserRes;
   resendVerificationEmail: Scalars['String']['output'];
+  resetPassword: Scalars['String']['output'];
   verifyEmail: Scalars['String']['output'];
 };
 
@@ -31,12 +34,29 @@ export type MutationAddUserArgs = {
 };
 
 
+export type MutationConfirmOtpArgs = {
+  OTP: Scalars['String']['input'];
+};
+
+
+export type MutationConfirmResetPasswordArgs = {
+  confirmPassword: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
 export type MutationLoginArgs = {
   input: LoginInput;
 };
 
 
 export type MutationResendVerificationEmailArgs = {
+  email: Scalars['String']['input'];
+};
+
+
+export type MutationResetPasswordArgs = {
   email: Scalars['String']['input'];
 };
 
@@ -52,6 +72,8 @@ export type Query = {
 
 export type User = {
   __typename?: 'User';
+  OTP?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   name?: Maybe<Scalars['String']['output']>;
@@ -67,6 +89,11 @@ export type AddUserInput = {
 
 export type LoginInput = {
   email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type ResetPasswordInput = {
+  confirmPassword: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
@@ -155,6 +182,7 @@ export type ResolversTypes = {
   User: ResolverTypeWrapper<User>;
   addUserInput: AddUserInput;
   loginInput: LoginInput;
+  resetPasswordInput: ResetPasswordInput;
   userRES: ResolverTypeWrapper<UserRes>;
 };
 
@@ -168,13 +196,17 @@ export type ResolversParentTypes = {
   User: User;
   addUserInput: AddUserInput;
   loginInput: LoginInput;
+  resetPasswordInput: ResetPasswordInput;
   userRES: UserRes;
 };
 
 export type MutationResolvers<ContextType = context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationAddUserArgs, 'input'>>;
+  confirmOTP?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationConfirmOtpArgs, 'OTP'>>;
+  confirmResetPassword?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationConfirmResetPasswordArgs, 'confirmPassword' | 'email' | 'password'>>;
   login?: Resolver<ResolversTypes['userRES'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input'>>;
   resendVerificationEmail?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationResendVerificationEmailArgs, 'email'>>;
+  resetPassword?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'email'>>;
   verifyEmail?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationVerifyEmailArgs, 'verificationToken'>>;
 };
 
@@ -183,6 +215,8 @@ export type QueryResolvers<ContextType = context, ParentType extends ResolversPa
 };
 
 export type UserResolvers<ContextType = context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  OTP?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
