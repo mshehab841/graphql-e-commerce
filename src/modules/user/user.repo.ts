@@ -12,6 +12,7 @@ class userRepository {
             name,
             photo,
             password,
+
         })
         return user.toJSON()
     }
@@ -127,6 +128,7 @@ class userRepository {
         }
         return true
     }
+
 }
 export type userRepoType =  userRepository
 export default userRepository

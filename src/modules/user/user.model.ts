@@ -82,3 +82,4 @@ Post.belongsTo(Users , {foreignKey : 'userId' })
 Users.belongsToMany(Post , {through : like , foreignKey : 'userId' , as : 'likedPosts'})
 Post.belongsToMany(Users , {through : like , foreignKey : 'postId' , as : 'likedBy'})
 export default Users;
+

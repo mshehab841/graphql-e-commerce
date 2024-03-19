@@ -9,6 +9,7 @@ export const server = new ApolloServer({
   resolvers : mergedResolvers ,
 });
 async function main() {
+
   const { url } = await startStandaloneServer(server, {
     context: async ({ req  , res }) => ({req , res })
   });

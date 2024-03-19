@@ -96,6 +96,7 @@ const userResolvers : Resolvers = {
             }
             const res = await service.uploadPhotoServices(file , user.id)
             return res
+
         }
     },
 

@@ -5,6 +5,7 @@ import { decodedEmailVerification, generateOTP, generateTwoToken, verificationTo
 import { AddUserInput, Addresses, CreateAddressInput, User, UserRes } from "../../types";
 import { sendForgetPasswordEmail, sendVerificationEmail } from "../../middleware/send-email";
 import { generateImageWithText } from "../../middleware/image-generator";
+
 /**
  * in Register :- 
  * verification email{
@@ -168,5 +169,6 @@ class userServices {
         }
         return "Photo uploaded successfully"
     }
+
 }
 export default userServices;

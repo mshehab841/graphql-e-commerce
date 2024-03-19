@@ -65,6 +65,7 @@ export type Mutation = {
   updatePost: UpdatePostRes;
   updateUsername: Scalars['String']['output'];
   uploadPhoto: Scalars['String']['output'];
+
   verifyEmail: Scalars['String']['output'];
 };
 
@@ -126,6 +127,7 @@ export type MutationEnable2FaArgs = {
 };
 
 
+
 export type MutationLoginArgs = {
   input: LoginInput;
 };
@@ -155,6 +157,7 @@ export type MutationUpdateUsernameArgs = {
 export type MutationUploadPhotoArgs = {
   file: Scalars['Upload']['input'];
 };
+
 
 
 export type MutationVerifyEmailArgs = {
@@ -280,6 +283,7 @@ export type UpdatePostRes = {
   message: Scalars['String']['output'];
 };
 
+
 export type UserRes = {
   __typename?: 'userRES';
   accessToken: Scalars['String']['output'];
@@ -379,6 +383,7 @@ export type ResolversTypes = {
   updateCommentInput: UpdateCommentInput;
   updatePostInput: UpdatePostInput;
   updatePostRes: ResolverTypeWrapper<UpdatePostRes>;
+
   userRES: ResolverTypeWrapper<UserRes>;
 };
 
@@ -406,6 +411,7 @@ export type ResolversParentTypes = {
   updateCommentInput: UpdateCommentInput;
   updatePostInput: UpdatePostInput;
   updatePostRes: UpdatePostRes;
+
   userRES: UserRes;
 };
 
@@ -455,6 +461,7 @@ export type MutationResolvers<ContextType = context, ParentType extends Resolver
   updatePost?: Resolver<ResolversTypes['updatePostRes'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'id' | 'input'>>;
   updateUsername?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUpdateUsernameArgs, 'username'>>;
   uploadPhoto?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUploadPhotoArgs, 'file'>>;
+
   verifyEmail?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationVerifyEmailArgs, 'verificationToken'>>;
 };
 
@@ -487,6 +494,7 @@ export type UserResolvers<ContextType = context, ParentType extends ResolversPar
   OTP?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   addresses?: Resolver<Array<ResolversTypes['Addresses']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
