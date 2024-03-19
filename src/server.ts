@@ -1,22 +1,19 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import typeDefs from './schema/schema.graphql';
-import resolvers from './schema/resolvers.graphql';
 import { db_connection } from './DB/connection';
 import dotenv from 'dotenv';dotenv.config()
+import { mergedTypeDefs , mergedResolvers } from './schema/graphql';
 
-db_connection()
 export const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  typeDefs :mergedTypeDefs,
+  resolvers : mergedResolvers ,
 });
 async function main() {
-
-
 
   const { url } = await startStandaloneServer(server, {
     context: async ({ req  , res }) => ({req , res })
   });
+db_connection()
 console.log(`🚀  Server ready at: ${url}`);
 }
 main()

@@ -2,8 +2,9 @@ import bcrypt from "bcrypt";
 import { userRepoType } from "./user.repo";
 
 import { decodedEmailVerification, generateOTP, generateTwoToken, verificationToken } from "../../middleware/deserialize-user";
-import { User, UserRes } from "../../types";
+import { AddUserInput, Addresses, CreateAddressInput, User, UserRes } from "../../types";
 import { sendForgetPasswordEmail, sendVerificationEmail } from "../../middleware/send-email";
+import { generateImageWithText } from "../../middleware/image-generator";
 
 /**
  * in Register :- 
@@ -25,23 +26,21 @@ class userServices {
     constructor(userRepo: userRepoType) {
         this.userRepo = userRepo;
     }
-    async addUserServices(
-        email: string,
-        name: string,
-        password: string
-    ): Promise<User> {
+    async addUserServices(input : AddUserInput ): Promise<User> {
 
-        if (!email || !name || !password) {
+        if (!input.email || !input.name || !input.password) {
             throw new Error("All fields are required");
         }
-        const userFound = await this.userRepo.getUserByEmail(email);
+        const userFound = await this.userRepo.getUserByEmail(input.email);
         if (userFound) {
             throw new Error("User already exists");
         }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await this.userRepo.createUser(email, name, hashedPassword);
+        const image =await generateImageWithText(input.name || "")
+        input.photo = image
+        const hashedPassword = await bcrypt.hash(input.password, 10);
+        const user = await this.userRepo.createUser(input.email, input.name,input.photo, hashedPassword);
         const token = verificationToken(user.id)
-        sendVerificationEmail(email,token)
+        sendVerificationEmail(input.email,token)
         return user;
     }
     async loginServices(email: string, password: string): Promise<UserRes> {
@@ -53,6 +52,7 @@ class userServices {
             throw new Error("User not found");
 
         }
+        console.log(user);
         const match = await bcrypt.compare(password, user.password!);
         if (!match) {
             throw new Error("Wrong password");
@@ -62,6 +62,13 @@ class userServices {
         }
         const token = generateTwoToken(user.id);
         return token;
+    }
+    async getUserByIdServices(id : number ):Promise<User>{
+        const user = await this.userRepo.getUserById(id)
+        if (!user) {
+            throw new Error("User not found");
+        }
+        return user
     }
     async verifyEmailServices(verificationToken : string): Promise<string> {
         const decoded = decodedEmailVerification(verificationToken)
@@ -113,6 +120,54 @@ class userServices {
         }else{
             return"something caused Error"
         }
+    }
+    async updateUsernameServices(username : string , userId : number) : Promise<string>{
+       const response =  await this.userRepo.updateUsername(username , userId)
+       if (!response) {
+        throw new Error("User not found")
+        }else{
+        return "username updated successfully"
+        }
+    }
+    async createAddressServices(input : CreateAddressInput , userId : number ): Promise<Addresses>{
+        if (!input) {
+            throw new Error("All fields are required");
+        }
+        if(input.isDefault === true){
+            const defaultAddress : any = await this.userRepo.getDefaultAddress(userId)
+            console.log(defaultAddress);
+            if(defaultAddress){
+                await this.userRepo.updateDefaultAddress(defaultAddress.id)
+            }
+        }
+        const newAddress = await this.userRepo.createAddresses(input , userId)
+        if (!newAddress) {
+            throw new Error("Address not created")
+        }
+        return newAddress
+    }
+    async getAddressServices(userId : number):Promise<Addresses[]>{
+        const address = await this.userRepo.getAddressByUserId(userId)
+        if (!address) {
+            throw new Error("Address not found")
+        }
+        return address
+    }
+    async enable2FAservices(email : string):Promise<string>{
+        const user = await this.userRepo.getUserByEmail(email)
+        if(!user){
+            throw new Error("User not found")
+        }
+        const token = verificationToken(user.id)
+        sendVerificationEmail(email,token)
+        return "2FA enabled"
+    }
+    async uploadPhotoServices(file : any , userId : number ): Promise<string>{
+        const response = await this.userRepo.uploadPhoto(file , userId)
+        if (!response) {
+            throw new Error("Photo not uploaded")
+        }
+        return "Photo uploaded successfully"
     }
 
 }
